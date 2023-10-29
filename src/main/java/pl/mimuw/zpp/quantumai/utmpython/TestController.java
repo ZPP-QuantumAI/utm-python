@@ -2,6 +2,7 @@ package pl.mimuw.zpp.quantumai.utmpython;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,8 @@ import static java.io.File.createTempFile;
 @Slf4j
 public class TestController {
     private final SolveService solveService;
+    private static final int CONFLICT_RESPONSE_CODE = 409;
+
     @GetMapping("/hello-world")
     public String test() {
         return "hello world";
@@ -38,12 +41,18 @@ public class TestController {
         deleteFile(python);
         deleteFile(input);
 
-        return ResponseEntity.ok(result);
+        if (result != null) {
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.status(HttpStatusCode.valueOf(CONFLICT_RESPONSE_CODE))
+                    .body("Turing machine is busy with another task, try again later");
+        }
     }
 
     private static File tempFile(MultipartFile multipartFile) throws IOException {
         File file = createTempFile("temp", null);
         multipartFile.transferTo(file);
+
         return file;
     }
 
