@@ -18,7 +18,6 @@ public class SolveService {
             File pythonFile,
             File inputFile
     ) throws IOException, InterruptedException {
-        wait(10000);
         String pythonFileAbsolutePath = pythonFile.getAbsolutePath();
         File outputFile = createTempFile("output", "txt");
         ProcessBuilder processBuilder = new ProcessBuilder("python3", pythonFileAbsolutePath)
