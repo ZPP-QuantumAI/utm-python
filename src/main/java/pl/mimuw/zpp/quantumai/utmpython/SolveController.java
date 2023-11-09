@@ -18,7 +18,7 @@ import static java.io.File.createTempFile;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class TestController {
+public class SolveController {
     private final SolveService solveService;
     @GetMapping("/hello-world")
     public String test() {
